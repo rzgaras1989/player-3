@@ -2,7 +2,7 @@
   "id": "smart-division",
   "name": "سمارت دیڤیژن - Smart Division",
   "short_name": "Smart Division",
-  "description": "دابەشکردنی تیپەکانی یاری، پشوو وەردەگرن و پێکان",
+  "description": "دابەشکردنی تیپەکانی یاری، یەدەک و پێکان",
   "lang": "ckb",
   "dir": "rtl",
   "start_url": "./index.html",
