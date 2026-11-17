@@ -1,0 +1,29 @@
+{
+  "id": "smart-division",
+  "name": "سمارت دیڤیژن - Smart Division",
+  "short_name": "Smart Division",
+  "description": "دابەشکردنی تیپەکانی یاری، پشوو وەردەگرن و پێکان",
+  "lang": "ckb",
+  "dir": "rtl",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0d12",
+  "theme_color": "#0a0d12",
+  "categories": ["sports", "utilities"],
+  "icons": [
+    {
+      "src": "player.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "player.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
