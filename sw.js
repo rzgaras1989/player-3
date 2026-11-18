@@ -1,7 +1,7 @@
 /* Smart Division - Service Worker (کارکردنی ئۆفلاین)
    هەر کاتێک فایلەکانت گۆڕی (بەتایبەت html2canvas، فۆنت، player.png)
    ژمارەی CACHE_VERSION بگۆڕە بۆ نموونە v2 */
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v3';
 const CACHE = 'smart-division-' + CACHE_VERSION;
 
 const ASSETS = [
@@ -10,6 +10,9 @@ const ASSETS = [
   './manifest.json',
   './html2canvas.min.js',
   './vazirmatn.woff2',
+  './speda-bold.woff2',
+  './speda-bold.ttf',
+  './speda-bold.otf',
   './player.png'
 ];
 
