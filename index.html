@@ -19,7 +19,18 @@
     <script src="html2canvas.min.js"></script>
 
     <style>
-        /* فۆنتی لۆکاڵ (ئۆفلاین) - ئەگەر نەبوو فۆنتی سیستەم بەکاردێت */
+        /* فۆنتی Speda Bold - فایلەکە (speda-bold.ttf یان speda-bold.woff2) لە تەنیشت index.html دابنێ */
+        @font-face {
+            font-family: 'Speda';
+            src: url('speda-bold.woff2') format('woff2'),
+                 url('speda-bold.ttf') format('truetype'),
+                 url('speda-bold.otf') format('opentype');
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* فۆنتی یەدەگ (ئۆفلاین) - ئەگەر Speda نەبوو ئەمە بەکاردێت */
         @font-face {
             font-family: 'Vazirmatn';
             src: url('vazirmatn.woff2') format('woff2');
@@ -54,7 +65,7 @@
             background: var(--bg);
             color: var(--text);
             direction: rtl;
-            font-family: 'Vazirmatn', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
+            font-family: 'Speda', 'Vazirmatn', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
             padding: calc(12px + var(--safe-t)) 12px calc(104px + var(--safe-b));
             -webkit-font-smoothing: antialiased;
         }
@@ -130,15 +141,17 @@
         }
 
         /* ڕۆژ و مانگ و ساڵ و کات - لە یەک ڕیز */
-        .poster-head { display: flex; justify-content: center; margin-bottom: 12px; }
+        .poster-head { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .poster-by { direction: ltr; font-size: 12.5px; font-weight: 700; color: #dfe8f5; white-space: nowrap; }
+        .poster-by span { color: #8e99a9; margin-right: 4px; }
         .poster-date {
-            display: inline-flex; align-items: center; gap: 9px; max-width: 100%;
+            display: inline-flex; align-items: center; gap: 11px; max-width: 100%;
             padding: 7px 15px; border-radius: 999px; white-space: nowrap;
             background: rgba(251,197,49,.10); border: 1px solid rgba(251,197,49,.32);
             font-size: 13px; font-weight: 700; color: var(--yellow-theme);
         }
-        .pd-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(251,197,49,.65); flex: none; }
-        .pd-time { direction: ltr; color: #fff; font-weight: 800; }
+        .pd-sep { width: 2px; height: 18px; border-radius: 2px; background: #4cc9f0; flex: none; }
+        .pd-time { color: #fff; font-weight: 800; unicode-bidi: isolate; }
 
         .teams { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .team { position: relative; border-radius: 22px; padding: 12px 8px 8px; overflow: hidden; }
@@ -154,26 +167,21 @@
         .team-b .cnt { background: rgba(255,255,255,.12); color: #fff; }
         .team-b .slot { background: rgba(255,255,255,.04); border: 1px dashed rgba(255,255,255,.16); color: rgba(255,255,255,.35); }
         .team-b .slot.filled { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); color: #fff; }
-        .team-b .num { background: rgba(255,255,255,.10); color: rgba(255,255,255,.5); }
-        .team-b .filled .num { background: #fff; color: var(--black-theme); }
         .team-b .del-x { background: rgba(255,107,107,.18); color: #ff8d8d; }
 
         /* تیپی زەرد */
-        .team-y { background: linear-gradient(165deg, #ffd75e 0%, #fbc531 50%, #f0a30a 100%); border: 1px solid rgba(255,255,255,.4); color: var(--ink); }
+        .team-y { background: linear-gradient(165deg, #fff0b8 0%, #ffe28e 50%, #fbd062 100%); border: 1px solid rgba(255,255,255,.45); color: var(--ink); }
         .team-y .kit { background: var(--ink); }
         .team-y .cnt { background: rgba(23,19,10,.14); color: var(--ink); }
-        .team-y .slot { background: rgba(23,19,10,.06); border: 1px dashed rgba(23,19,10,.28); color: rgba(23,19,10,.45); }
+        .team-y .slot { background: rgba(255,255,255,.28); border: 1px dashed rgba(23,19,10,.22); color: rgba(23,19,10,.4); }
         .team-y .slot.filled { background: rgba(255,255,255,.58); border: 1px solid rgba(23,19,10,.14); color: var(--ink); }
-        .team-y .num { background: rgba(23,19,10,.12); color: rgba(23,19,10,.55); }
-        .team-y .filled .num { background: var(--ink); color: var(--yellow-theme); }
         .team-y .del-x { background: rgba(23,19,10,.12); color: #b3261e; }
 
         .slots { display: grid; gap: 6px; }
-        .slot { position: relative; display: flex; align-items: center; gap: 8px; min-height: 36px; padding: 4px 6px; border-radius: 12px; font-size: 13.5px; font-weight: 700; line-height: 1.25; user-select: none; -webkit-user-select: none; }
+        /* ناوەکە لە ناوەڕاستی خانەکە دەبێت (بێ ژمارە). پادینگی هەردوو لا یەکسانە بۆ ئەوەی × کاریگەری نەبێت */
+        .slot { position: relative; display: flex; align-items: center; justify-content: center; min-height: 38px; padding: 4px 30px; border-radius: 12px; font-size: 14px; font-weight: 700; line-height: 1.25; text-align: center; user-select: none; -webkit-user-select: none; }
         .slot.filled { cursor: pointer; }
-        .slot .num { width: 22px; height: 22px; border-radius: 8px; display: grid; place-items: center; font-size: 11px; font-weight: 800; flex: none; }
-        .slot .nm { flex: 1; min-width: 0; word-break: break-word; }
-        .slot.filled .nm { padding-left: 24px; }
+        .slot .nm { flex: 1; min-width: 0; word-break: break-word; text-align: center; }
         /* دوگمەی × لە وێنەکەدا نایەت (data-html2canvas-ignore) و جێگای نەگرتووە */
         .del-x { position: absolute; left: 5px; top: 50%; margin-top: -13px; width: 26px; height: 26px; border-radius: 9px; font-size: 17px; line-height: 1; font-weight: 700; display: grid; place-items: center; padding: 0; }
 
@@ -229,7 +237,7 @@
         .mv em { font-style: normal; font-size: 11.5px; font-weight: 700; opacity: .7; }
         .mv-b { background: #000; border-color: rgba(255,255,255,.35); color: #fff; }
         .mv-b i { background: #000; border: 2px solid #fff; }
-        .mv-y { background: linear-gradient(135deg, #ffd75e, #f0a30a); border-color: transparent; color: var(--ink); }
+        .mv-y { background: linear-gradient(135deg, #fff0b8, #fbd062); border-color: transparent; color: var(--ink); }
         .mv-y i { background: var(--ink); }
         .mv-r i { background: var(--rest); }
         .mv-k i { background: var(--pekan); }
@@ -285,9 +293,10 @@
     <!-- ئەم بەشە وێنە دەگیرێت: ڕۆژ و کات + تیپەکان + یەدەک + پێکان -->
     <section id="export-area">
         <div class="poster-head">
+            <div class="poster-by"><span>By:</span>Rzgar Saeed</div>
             <div class="poster-date">
                 <span id="pdDate"></span>
-                <i class="pd-dot"></i>
+                <i class="pd-sep"></i>
                 <span id="pdTime" class="pd-time"></span>
             </div>
         </div>
@@ -430,8 +439,9 @@
         "سەرباز", "وەستا چۆمان", "م.سەرخێڵ"
     ];
 
-    const DAYS = ['یەکشەممە', 'دووشەممە', 'سێشەممە', 'چوارشەممە', 'پێنجشەممە', 'هەینی', 'شەممە'];
-    const MONTHS = ['کانوونی دووەم', 'شوبات', 'ئازار', 'نیسان', 'ئایار', 'حوزەیران', 'تەمموز', 'ئاب', 'ئەیلوول', 'تشرینی یەکەم', 'تشرینی دووەم', 'کانوونی یەکەم'];
+    // ژمارەکانی ڕێکەوت و کات بە ژمارەی کوردی/عەرەبی (٠١٢٣...) بنووسرێن؟ ئەگەر دەتەوێت 0123 بێت، بیکە false
+    const KU_DIGITS = true;
+    const dig = s => KU_DIGITS ? String(s).replace(/[0-9]/g, d => String.fromCharCode(0x0660 + Number(d))) : String(s);
 
     /* ================= یارمەتیدەرەکان ================= */
     const $ = id => document.getElementById(id);
@@ -453,7 +463,7 @@
             if (!Array.isArray(arr)) return null;
             return arr
                 .filter(x => x && typeof x.n === 'string' && x.n.trim() && typeof x.s === 'string' && x.s.length === 1 && 'pbyrk'.includes(x.s) && Number.isFinite(+x.id))
-                .map(x => ({ n: x.n, s: x.s, id: +x.id }));
+                .map(x => ({ n: x.n, s: x.s, id: +x.id, slot: x.slot, o: x.o }));
         } catch (e) { return null; }
     }
 
@@ -477,22 +487,54 @@
         return top.concat(list.filter(x => !top.includes(x)));
     }
 
+    // خانەی جێگیر: هەر یاریزانێکی تیپ (ڕەش/زەرد) slot ـی خۆی هەیە (0 تا 7).
+    // یاریزانی نوێ دەچێتە یەکەم خانەی بەتاڵ؛ ئەگەر یاریزانێک لابرا، ئەوانی تر جێگەکەی ناگرنەوە.
+    // یەدەک و پێکان بەپێی کاتی دانان ڕیز دەکرێن (o).
+    // ئەم فەنکشنە داتای کۆنیش ڕێک دەکات بەبێ ئەوەی ڕیزبەندی ئێستا تێک بدات.
+    function normalize(list) {
+        ['b', 'y'].forEach(s => {
+            const grp = list.filter(x => x.s === s);
+            const used = new Set();
+            grp.forEach(x => {
+                if (Number.isInteger(x.slot) && x.slot >= 0 && x.slot < TEAM_MAX && !used.has(x.slot)) used.add(x.slot);
+                else x.slot = -1;
+            });
+            grp.forEach(x => {
+                if (x.slot !== -1) return;
+                let i = 0;
+                while (used.has(i)) i++;
+                if (i < TEAM_MAX) { x.slot = i; used.add(i); } else { x.s = 'p'; }
+            });
+        });
+        let maxO = list.reduce((m, x) => Math.max(m, Number.isFinite(x.o) ? x.o : 0), 0);
+        list.forEach(x => {
+            if (x.s !== 'b' && x.s !== 'y') delete x.slot;
+            if (x.s === 'r' || x.s === 'k') { if (!Number.isFinite(x.o)) x.o = ++maxO; }
+            else delete x.o;
+        });
+        return list;
+    }
+
     let data = load();
     data = data ? applySeedUpdate(data) : seed();
+    data = normalize(data);
     try { localStorage.setItem(SEED_KEY, String(SEED_VERSION)); } catch (e) { }
     let nextId = data.reduce((m, x) => Math.max(m, x.id), 0) + 1;
+    let nextOrder = data.reduce((m, x) => Math.max(m, Number.isFinite(x.o) ? x.o : 0), 0) + 1;
     save();
 
     const byId = id => data.find(x => x.id === id);
     const inGroup = s => data.filter(x => x.s === s);
 
     /* ================= نیشاندان ================= */
-    // ڕۆژ، مانگ، ساڵ و کات (لە یەک ڕیز)
+    // ڕێکەوت بە شێوەی ڕۆژ-مانگ-ساڵ (٢٥-١٢-٢٠٢٦) و کاتی ١٢ سەعاتی (ب.ن = بەیانی، د.ن = دوای نیوەڕۆ)
     function updateDate() {
         const d = new Date();
         const pad = n => String(n).padStart(2, '0');
-        $('pdDate').textContent = DAYS[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear();
-        $('pdTime').textContent = pad(d.getHours()) + ':' + pad(d.getMinutes());
+        const h = d.getHours();
+        const h12 = (h % 12) || 12;
+        $('pdDate').textContent = dig(pad(d.getDate())) + '-' + dig(pad(d.getMonth() + 1)) + '-' + dig(d.getFullYear());
+        $('pdTime').textContent = dig(h12 + ':' + pad(d.getMinutes())) + ' ' + (h < 12 ? 'ب.ن' : 'د.ن');
     }
 
     function renderPool() {
@@ -502,22 +544,25 @@
             : `<div class="pool-empty">${data.length ? 'هەموو یاریزانەکان دابەش کران' : 'هیچ یاریزانێک نییە - ناوێک زیاد بکە'}</div>`;
     }
 
-    // دروستکردنی 8 خانە بە ڕیزبەندی جێگیر
+    // دروستکردنی 8 خانەی جێگیر (بێ ژمارە، ناو لە ناوەڕاست)
     function renderTeam(listId, status, countId) {
         const teamPlayers = inGroup(status);
+        const bySlot = {};
+        teamPlayers.forEach(p => { bySlot[p.slot] = p; });
         let html = '';
         for (let i = 0; i < TEAM_MAX; i++) {
-            const p = teamPlayers[i];
+            const p = bySlot[i];
             html += p
-                ? `<div class="slot filled" role="button" tabindex="0" data-id="${p.id}"><span class="num">${i + 1}</span><span class="nm">${esc(p.n)}</span><button type="button" class="del-x" data-html2canvas-ignore="true" aria-label="گەڕاندنەوە">×</button></div>`
-                : `<div class="slot"><span class="num">${i + 1}</span><span class="nm">بەتاڵ...</span></div>`;
+                ? `<div class="slot filled" role="button" tabindex="0" data-id="${p.id}"><span class="nm">${esc(p.n)}</span><button type="button" class="del-x" data-html2canvas-ignore="true" aria-label="گەڕاندنەوە">×</button></div>`
+                : `<div class="slot"><span class="nm">بەتاڵ...</span></div>`;
         }
         $(listId).innerHTML = html;
         $(countId).textContent = teamPlayers.length;
     }
 
+    // یەدەک و پێکان: بەپێی ئەوەی کێ یەکەم جار دانراوە
     function renderChips(listId, status, countId) {
-        const list = inGroup(status);
+        const list = inGroup(status).sort((a, b) => a.o - b.o);
         $(listId).innerHTML = list.length
             ? list.map(p => `<div class="chip" role="button" tabindex="0" data-id="${p.id}">${esc(p.n)}</div>`).join('')
             : '<span class="empty">هیچ کەس نییە</span>';
@@ -546,17 +591,30 @@
         toast('زیادکرا: ' + n);
     }
 
+    function firstFreeSlot(status) {
+        const used = new Set(inGroup(status).map(x => x.slot));
+        for (let i = 0; i < TEAM_MAX; i++) if (!used.has(i)) return i;
+        return -1;
+    }
+
     function move(id, newS) {
         const p = byId(id);
         if (!p) return false;
         if (p.s === newS) return true;
-        // پشکنینی ئەوەی کە ئایا تیپەکە پڕ بووە یان نا
-        if ((newS === 'b' || newS === 'y') && inGroup(newS).length >= TEAM_MAX) {
-            toast('ئەم تیپە 8 کەسی تەواوە!');
-            return false;
+        const isTeam = (newS === 'b' || newS === 'y');
+        let slot = -1;
+        if (isTeam) {
+            // یەکەم خانەی بەتاڵ؛ ئەگەر نەبوو تیپەکە پڕە
+            slot = firstFreeSlot(newS);
+            if (slot < 0) {
+                toast('ئەم تیپە 8 کەسی تەواوە!');
+                return false;
+            }
         }
-        // گۆڕینی ستاتۆسی یاریزان بەبێ تێکدانی ڕیزبەندی ئەوانی تر
+        // گۆڕینی ستاتۆسی یاریزان بەبێ تێکدانی خانەی ئەوانی تر
         p.s = newS;
+        if (isTeam) p.slot = slot; else delete p.slot;
+        if (newS === 'r' || newS === 'k') p.o = nextOrder++; else delete p.o;
         save();
         render();
         return true;
@@ -690,7 +748,8 @@
             ok: 'بەڵێ، دەستپێبکەرەوە'
         });
         if (!yes) return;
-        data.forEach(x => { x.s = 'p'; });
+        data.forEach(x => { x.s = 'p'; delete x.slot; delete x.o; });
+        nextOrder = 1;
         save();
         render();
         toast('هەفتەی نوێ ئامادەیە');
